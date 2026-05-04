@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Height AI Assistant</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23000'/><text x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='20' fill='%23fff'>H</text></svg>">
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -59,12 +60,12 @@
       background: var(--surface);
     }
     .logo-wrap {
-      width: 28px; height: 28px;
-      border-radius: 5px;
+      width: 42px; height: 42px;
+      border-radius: 6px;
       overflow: hidden;
       display: flex; align-items: center; justify-content: center;
       background: #ffffff;
-      border: 1px solid var(--border);
+      border: 1px solid #ffffff;
       flex-shrink: 0;
     }
     .logo-wrap img { width: 100%; height: 100%; object-fit: contain; display: block; }
@@ -98,8 +99,8 @@
       flex-shrink: 0;
     }
     .hero-icon svg { width: 42px; height: 42px; }
-    .hero-title { font-size: 1rem; font-weight: 500; color: var(--text); letter-spacing: -0.01em; margin-top: 0.2rem; }
-    .hero-subtitle { font-size: 0.75rem; color: var(--text-muted); font-weight: 300; text-align: center; max-width: 280px; line-height: 1.5; }
+    .hero-title { font-size: 1.15rem; font-weight: 500; color: var(--text); letter-spacing: -0.01em; margin-top: 0.2rem; }
+    .hero-subtitle { font-size: 0.85rem; color: var(--text-muted); font-weight: 300; text-align: center; max-width: 280px; line-height: 1.5; }
 
     /* MESSAGES */
     .messages {
@@ -133,7 +134,7 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 0.6rem; font-weight: 500; margin-top: 2px;
     }
-    .avatar.bot { background: var(--robot); }
+    .avatar.bot { background: #000000; }
     .avatar.bot svg { width: 18px; height: 18px; }
 
     .message-body { flex: 1; display: flex; flex-direction: column; gap: 0.65rem; }
@@ -286,7 +287,7 @@
       font-size: 0.68rem;
       color: var(--text-muted);
     }
-    .powered-by-text a { color: var(--text-muted); text-decoration: none; }
+    .powered-by-text a { color: #7a7874; text-decoration: none; }
     .powered-by-text a:hover { color: var(--text); text-decoration: underline; }
 
     .ended-note {
@@ -336,8 +337,8 @@
           <circle cx="37" cy="50" r="2.5" fill="#499281" opacity="0.5"/>
         </svg>
       </div>
-      <span class="hero-title">Height Assistant</span>
-      <span class="hero-subtitle">Provide information about your bid to receive a standard prompt for use in ChatGPT projects.</span>
+      <span class="hero-title">Height AI Assistant</span>
+      <span class="hero-subtitle">Provide information about your bid to receive a standard AI prompt for use in ChatGPT projects.</span>
     </div>
   </div>
 
@@ -459,7 +460,7 @@ function disableForms() {
 /* ── INTRO ── */
 function showIntro() {
   botMsg(
-    "Kia ora. I'm your AI prompt generator. Select the task you'd like a standard AI prompt for.",
+    "Kia ora. \uD83D\uDC4B\uD83C\uDFFE I'm your friendly AI prompt generator. Select the task you'd like a standard prompt for.",
     ['Bid Writing', 'Something Else'],
     handleTaskChoice
   );
@@ -526,7 +527,7 @@ function submitStep1() {
 /* ── STEP 2: RESPONSE FOCUS ── */
 function showStep2() {
   const body = createRow('bot');
-  typeText('Great. Now the response focus.', body).then(function() {
+  typeText('Great. Now let\'s add the response focus.', body).then(function() {
     const form = document.createElement('div');
     form.className = 'form-block';
     form.innerHTML =
@@ -557,7 +558,7 @@ function submitStep2() {
 /* ── STEP 3: NAMING & STYLE ── */
 function showStep3() {
   const body = createRow('bot');
-  typeText('Almost there \u2014 naming and style.', body).then(function() {
+  typeText('Almost there \u2014 add the naming and style.', body).then(function() {
     const form = document.createElement('div');
     form.className = 'form-block';
     form.innerHTML =
@@ -592,7 +593,7 @@ function submitStep3() {
 
 /* ── FILE UPLOADS ── */
 function startFileUploads() {
-  botMsg('Now upload the reference files. You can drag & drop them or click to upload. Select skip for any you don\'t have.').then(function() {
+  botMsg('Now upload the reference files. You can drag & drop them or click to upload. Select skip for the ones you don\'t have.').then(function() {
     setTimeout(function() { askForFile(0); }, 300);
   });
 }
@@ -607,7 +608,15 @@ function askForFile(idx) {
   const num   = idx + 1;
 
   const body = createRow('bot');
-  typeText('Upload ' + label, body).then(function() {
+  var uploadLabels = {
+    rfp: 'Upload the RFP',
+    response_form: 'Upload the Response Form',
+    specs: 'Upload the specifications file',
+    win_themes: 'Upload the win themes file',
+    style_guide: 'Upload the style guide'
+  };
+  var uploadLabel = uploadLabels[key];
+  typeText(uploadLabel, body).then(function() {
     const sub = document.createElement('div');
     sub.style.cssText = 'font-size:0.72rem;color:var(--text-muted);margin-top:-0.4rem;font-family:"DM Mono",monospace;';
     sub.textContent = num + ' of ' + FILE_KEYS.length;
@@ -703,28 +712,30 @@ document.addEventListener('dragover', function(e) { e.preventDefault(); });
 
 /* ── WEBHOOK ── */
 function sendToWebhook() {
-  showWaiting();
-  const payload = Object.assign({}, state.formData, {
-    rfp_filename:            state.files['rfp']           || '',
-    response_form_filename:  state.files['response_form'] || '',
-    specifications_filename: state.files['specs']         || '',
-    win_themes_filename:     state.files['win_themes']    || '',
-    style_guide_filename:    state.files['style_guide']   || ''
-  });
-  fetch(WEBHOOK_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  })
-  .then(function(res) { return res.text(); })
-  .then(function(text) {
-    hideWaiting();
-    resultText = text;
-    showResult(text);
-  })
-  .catch(function(err) {
-    hideWaiting();
-    botMsg('Something went wrong. Please try again.');
+  botMsg('Creating prompt... \u23F3').then(function() {
+    showWaiting();
+    const payload = Object.assign({}, state.formData, {
+      rfp_filename:            state.files['rfp']           || '',
+      response_form_filename:  state.files['response_form'] || '',
+      specifications_filename: state.files['specs']         || '',
+      win_themes_filename:     state.files['win_themes']    || '',
+      style_guide_filename:    state.files['style_guide']   || ''
+    });
+    fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(function(res) { return res.text(); })
+    .then(function(text) {
+      hideWaiting();
+      resultText = text;
+      showResult(text);
+    })
+    .catch(function(err) {
+      hideWaiting();
+      botMsg('Something went wrong. Please try again.');
+    });
   });
 }
 
@@ -733,7 +744,7 @@ function showResult(text) {
   const body = createRow('bot');
   const intro = document.createElement('div');
   intro.className = 'bubble';
-  intro.textContent = "Here's your proposal response:";
+  intro.textContent = "Here's your standard prompt";
   body.appendChild(intro);
 
   const wrap = document.createElement('div');
