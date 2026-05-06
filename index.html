@@ -36,15 +36,19 @@
     .app {
       display: flex;
       flex-direction: column;
-      width: 420px;
-      height: 820px;
+      width: min(640px, 100%);
+      height: 860px;
       border: 1px solid var(--border);
       border-radius: 16px;
       overflow: hidden;
       box-shadow: 0 4px 24px rgba(0,0,0,0.08);
       background: var(--surface);
     }
-    @media (max-width: 520px) {
+    @media (max-width: 660px) {
+      body { padding: 0.5rem; }
+      .app { height: calc(100dvh - 1rem); }
+    }
+    @media (max-width: 480px) {
       body { padding: 0; align-items: stretch; }
       .app { width: 100%; height: 100dvh; border-radius: 0; border: none; box-shadow: none; }
     }
@@ -170,6 +174,7 @@
     }
     input[type="text"]:focus, textarea:focus { border-color: #aaa9a5; }
     textarea { resize: vertical; min-height: 68px; }
+    select:focus { border-color: #aaa9a5; outline: none; }
 
     .next-btn {
       background: #499281; color: #fff; border: none;
@@ -454,7 +459,7 @@ function hideWaiting() { if (waitRow) { waitRow.remove(); waitRow = null; } }
 
 /* ── DISABLE PAST FORMS ── */
 function disableForms() {
-  msgsEl().querySelectorAll('input, textarea, .next-btn').forEach(function(el) { el.disabled = true; });
+  msgsEl().querySelectorAll('input, textarea, select, .next-btn').forEach(function(el) { el.disabled = true; });
 }
 
 /* ── INTRO ── */
@@ -532,12 +537,24 @@ function showStep2() {
     form.className = 'form-block';
     form.innerHTML =
       '<div class="field-wrap">' +
-        '<label class="field-label">Non-price attributes, especially Section 3</label>' +
+        '<label class="field-label">What have you been tasked to support? e.g., Executive Summary, Case Studies, CVs or a particular response schedule</label>' +
         '<textarea id="f_non_price"></textarea>' +
       '</div>' +
       '<div class="field-wrap">' +
-        '<label class="field-label">Subject-matter expertise</label>' +
-        '<input type="text" id="f_sme">' +
+        '<label class="field-label">What subject matter expertise should the writing assistant have? e.g., Road maintenance, bridge engineer</label>' +
+        '<textarea id="f_sme"></textarea>' +
+      '</div>' +
+      '<div class="field-wrap">' +
+        '<label class="field-label">Evaluation criteria (leave blank to use standard criteria)</label>' +
+        '<textarea id="f_eval_criteria"></textarea>' +
+      '</div>' +
+      '<div class="field-wrap">' +
+        '<label class="field-label">English variant (New Zealand or Australian)</label>' +
+        '<select id="f_english_variant" style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:0.55rem 0.8rem;color:var(--text);font-family:\'DM Sans\',sans-serif;font-size:0.88rem;outline:none;appearance:none;cursor:pointer;">' +
+          '<option value="">Select one...</option>' +
+          '<option value="New Zealand English">New Zealand English</option>' +
+          '<option value="Australian English">Australian English</option>' +
+        '</select>' +
       '</div>' +
       '<button class="next-btn" onclick="submitStep2()">Next</button>';
     body.appendChild(form);
@@ -549,7 +566,9 @@ function submitStep2() {
   const g = function(id) { const el = document.getElementById(id); return el ? el.value : ''; };
   Object.assign(state.formData, {
     non_price_attributes:     g('f_non_price'),
-    subject_matter_expertise: g('f_sme')
+    subject_matter_expertise: g('f_sme'),
+    evaluation_criteria:      g('f_eval_criteria'),
+    english_variant:          g('f_english_variant')
   });
   disableForms();
   setTimeout(showStep3, 350);
@@ -557,36 +576,11 @@ function submitStep2() {
 
 /* ── STEP 3: NAMING & STYLE ── */
 function showStep3() {
-  const body = createRow('bot');
-  typeText('Almost there \u2014 add the naming and style.', body).then(function() {
-    const form = document.createElement('div');
-    form.className = 'form-block';
-    form.innerHTML =
-      '<div class="field-wrap">' +
-        '<label class="field-label">Our client (possessive form)</label>' +
-        '<input type="text" id="f_our_poss">' +
-      '</div>' +
-      '<div class="field-wrap">' +
-        '<label class="field-label">Their client (possessive form)</label>' +
-        '<input type="text" id="f_their_poss">' +
-      '</div>' +
-      '<div class="field-wrap">' +
-        '<label class="field-label">Client writing style guide reference</label>' +
-        '<input type="text" id="f_style_ref">' +
-      '</div>' +
-      '<button class="next-btn" onclick="submitStep3()">Next</button>';
-    body.appendChild(form);
-    scrollBot();
-  });
+  disableForms();
+  setTimeout(startFileUploads, 350);
 }
 
 function submitStep3() {
-  const g = function(id) { const el = document.getElementById(id); return el ? el.value : ''; };
-  Object.assign(state.formData, {
-    our_client_possessive:   g('f_our_poss'),
-    their_client_possessive: g('f_their_poss'),
-    style_guide_reference:   g('f_style_ref')
-  });
   disableForms();
   setTimeout(startFileUploads, 350);
 }
@@ -613,7 +607,7 @@ function askForFile(idx) {
     response_form: 'Upload the Response Form',
     specs: 'Upload the specifications file',
     win_themes: 'Upload the win themes file',
-    style_guide: 'Upload the style guide'
+    style_guide: 'Upload the writing style guide, if available'
   };
   var uploadLabel = uploadLabels[key];
   typeText(uploadLabel, body).then(function() {
