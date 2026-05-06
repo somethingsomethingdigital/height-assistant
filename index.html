@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Height AI Assistant · Prompt Generator</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23499281'/><text x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='20' fill='%23fff'>H</text></svg>">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23499281'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='20' fill='%23fff'%3EH%3C/text%3E%3C/svg%3E">
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -53,7 +53,6 @@
       .app { width: 100%; height: 100dvh; border-radius: 0; border: none; box-shadow: none; }
     }
 
-    /* HEADER */
     .header {
       flex-shrink: 0;
       display: flex;
@@ -72,7 +71,7 @@
       border: 1px solid #ffffff;
       flex-shrink: 0;
     }
-    .logo-wrap img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .logo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .restart-btn {
       margin-left: auto;
       background: transparent; border: none;
@@ -84,7 +83,6 @@
     .restart-btn:hover { background: rgba(255,255,255,0.2); color: #ffffff; }
     .restart-btn svg { width: 16px; height: 16px; }
 
-    /* HERO */
     .hero {
       display: flex;
       flex-direction: column;
@@ -104,7 +102,6 @@
     .hero-title { font-size: 1.15rem; font-weight: 500; color: var(--text); letter-spacing: -0.01em; margin-top: 0.2rem; }
     .hero-subtitle { font-size: 0.85rem; color: var(--text-muted); font-weight: 300; text-align: center; max-width: 280px; line-height: 1.5; }
 
-    /* MESSAGES */
     .messages {
       flex: 1;
       overflow-y: auto;
@@ -152,7 +149,6 @@
     }
     @keyframes blink { 50% { opacity: 0; } }
 
-    /* FORM */
     .form-block { display: flex; flex-direction: column; gap: 0.9rem; margin-top: 0.25rem; }
     .field-wrap { display: flex; flex-direction: column; gap: 0.3rem; }
     .field-label { font-size: 0.88rem; color: #3a3834; font-weight: 500; }
@@ -184,7 +180,6 @@
     .next-btn:hover { opacity: 0.8; transform: scale(0.98); }
     .next-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
-    /* OPTION BUTTONS */
     .buttons-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.2rem; }
     .option-btn {
       background: transparent;
@@ -200,7 +195,6 @@
     .option-btn:hover { background: var(--accent-light); border-color: #499281; }
     .option-btn:disabled { opacity: 0.35; cursor: default; pointer-events: none; }
 
-    /* FILE UPLOAD */
     .drop-zone {
       border: 1px dashed var(--border);
       border-radius: 10px;
@@ -237,7 +231,6 @@
     .skip-btn:hover { color: var(--text); }
     .skip-btn:disabled { opacity: 0.35; cursor: default; pointer-events: none; }
 
-    /* RESULT */
     .result-wrap {
       background: var(--bg);
       border: 1px solid var(--border);
@@ -259,14 +252,12 @@
     .copy-btn:hover { background: var(--accent-light); color: var(--text); }
     .copy-btn.ok { color: #499281; border-color: #499281; }
 
-    /* TYPING DOTS */
     .typing-dots { display: flex; gap: 5px; align-items: center; padding: 4px 0; }
     .typing-dot { width: 6px; height: 6px; background: var(--text-muted); border-radius: 50%; animation: tdBounce 1.2s infinite; }
     .typing-dot:nth-child(2) { animation-delay: 0.2s; }
     .typing-dot:nth-child(3) { animation-delay: 0.4s; }
     @keyframes tdBounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
 
-    /* DRAG OVERLAY */
     #dragOverlay {
       display: none; position: fixed; inset: 0;
       background: rgba(240,237,232,0.85);
@@ -278,7 +269,6 @@
     #dragOverlay.active { display: flex; }
     #dragOverlay p { font-size: 0.9rem; color: var(--accent); font-weight: 500; }
 
-    /* FOOTER */
     .footer {
       flex-shrink: 0;
       padding: 0.75rem 1.25rem 1rem;
@@ -311,7 +301,7 @@
 <div class="app">
   <header class="header">
     <div class="logo-wrap">
-      <img src="data:image/png;base64,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" alt="Height">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAYAAABV7bNHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAF8WlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDUgNzkuMTYzNDk5LCAyMDE4LzA4LzEzLTE2OjQwOjIyICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxOSAoTWFjaW50b3NoKSIgeG1wOkNyZWF0ZURhdGU9IjIwMjQtMDEtMTVUMTA6MzA6MjErMDI6MDAiIHhtcDpNb2RpZnlEYXRlPSIyMDI0LTAxLTE1VDEwOjMwOjIxKzAyOjAwIiB4bXA6TWV0YWRhdGFEYXRlPSIyMDI0LTAxLTE1VDEwOjMwOjIxKzAyOjAwIiBkYzpmb3JtYXQ9ImltYWdlL3BuZyIgcGhvdG9zaG9wOkNvbG9yTW9kZT0iMyIgcGhvdG9zaG9wOklDQ1Byb2ZpbGU9InNSR0IgSUVDNjE5NjYtMi4xIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjU4ZTVlMzU0LTQzNWYtNDFhNS05NmM4LTk0ODA2ZTQ2YjlhNCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo1OGU1ZTM1NC00MzVmLTQxYTUtOTZjOC05NDgwNmU0NmI5YTQiIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1OGU1ZTM1NC00MzVmLTQxYTUtOTZjOC05NDgwNmU0NmI5YTQiPiA8eG1wTU06SGlzdG9yeT4gPHJkZjpTZXE+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJjcmVhdGVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOjU4ZTVlMzU0LTQzNWYtNDFhNS05NmM4LTk0ODA2ZTQ2YjlhNCIgc3RFdnQ6d2hlbj0iMjAyNC0wMS0xNVQxMDozMDoyMSswMjowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTkgKE1hY2ludG9zaCkiLz4gPC9yZGY6U2VxPiA8L3htcE1NOkhpc3Rvcnk+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+Af/+/fz7+vn49/b19PPy8fDv7u3s6+rp6Ofm5eTj4uHg397d3Nva2djX1tXU09LR0M/OzczLysnIx8bFxMPCwcC/vr28u7q5uLe2tbSzsrGwr66trKuqqainpqWko6KhoJ+enZybmpmYl5aVlJOSkZCPjo2Mi4qJiIeGhYSDgoGAf359fHt6eXh3dnV0c3JxcG9ubWxramloZ2ZlZGNiYWBfXl1cW1pZWFdWVVRTUlFQT05NTEtKSUhHRkVEQ0JBQD8+PTw7Ojk4NzY1NDMyMTAvLi0sKyopKCcmJSQjIiEgHx4dHBsaGRgXFhUUExIREA8ODQwLCgkIBwYFBAMCAQAAIfkEBQoAAAAsAAAAABAAEAAABNcw6cmqu9jHD1oUJMh5IkaWlFkOqaqCqIiq7Rqg7SzP9k3z/oB8v+JQuIcMJBLKZcUxCIpMSjVqUqSctFwvKgw2j9AqNjusRtvabLb7rWbB5XR6va73c+H5fX+/f+j/h4eIiYqLjI0vDYaTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7/AAMKHEiwoMGDCBMqXMiwocOHECNKnEixosWLGBcBAgA7" alt="Height">
     </div>
     <button class="restart-btn" id="globalRestartBtn" title="Restart session">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -353,7 +343,6 @@
 <script>
 const WEBHOOK_URL = 'https://hook.us1.make.com/431zm5huyqdtadg15wpiw5hmuyw5csiu';
 
-// Global state for form data and file references
 let state = { formData: {}, files: {} };
 
 const FILE_STEPS = [
@@ -367,13 +356,11 @@ const FILE_STEPS = [
 let fileStepIndex = 0;
 let fileStepLocked = false;
 let resultText = '';
-let activeConversation = true;   // disables further interaction when chat ended
+let activeConversation = true;
 
-// Helper references
 const msgsEl = () => document.getElementById('messages');
 const scrollBot = () => setTimeout(() => { const m = msgsEl(); m.scrollTop = m.scrollHeight; }, 70);
 
-// Display robot avatar inline
 function robotSVG() {
   return '<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">'
     + '<line x1="32" y1="6" x2="32" y2="14" stroke="white" stroke-width="3" stroke-linecap="round"/>'
@@ -389,7 +376,6 @@ function robotSVG() {
     + '</svg>';
 }
 
-// Create row container
 function createRow(sender) {
   const row = document.createElement('div');
   row.className = `message-row ${sender}`;
@@ -405,7 +391,6 @@ function createRow(sender) {
   return body;
 }
 
-// Typewriter effect
 function typeText(text, body, speed = 18) {
   return new Promise(resolve => {
     const bubble = document.createElement('div');
@@ -425,7 +410,6 @@ function typeText(text, body, speed = 18) {
   });
 }
 
-// Buttons row
 function addButtons(body, options, onSelect) {
   const row = document.createElement('div');
   row.className = 'buttons-row';
@@ -444,7 +428,6 @@ function addButtons(body, options, onSelect) {
   scrollBot();
 }
 
-// Show bot message with optional buttons
 function botMsg(text, options = null, onSelect = null) {
   if (!activeConversation) return Promise.resolve(null);
   const body = createRow('bot');
@@ -455,7 +438,6 @@ function botMsg(text, options = null, onSelect = null) {
   });
 }
 
-// waiting animation
 let waitRow = null;
 function showWaiting() {
   if (!activeConversation) return;
@@ -473,23 +455,15 @@ function disableForms() {
   msgsEl().querySelectorAll('input, textarea, select, .next-btn, .skip-btn').forEach(el => { if (el) el.disabled = true; });
 }
 
-// ----------------------------------------------
-// RESET EVERYTHING (CORE FIX FOR START OVER)
-// ----------------------------------------------
 function fullResetAndRestart() {
   if (!activeConversation) activeConversation = true;
-  // kill any pending lock and reset indices
   fileStepIndex = 0;
   fileStepLocked = false;
   resultText = '';
-  // reset state
   state = { formData: {}, files: {} };
-  // remove any waiting indicator
   hideWaiting();
-  // clear messages and re-add hero section
   const heroHTML = document.getElementById('heroSection').outerHTML;
   msgsEl().innerHTML = heroHTML;
-  // re-trigger intro after a smooth delay
   setTimeout(() => { showIntro(); }, 350);
 }
 
@@ -497,9 +471,6 @@ function restartChat() {
   fullResetAndRestart();
 }
 
-// ----------------------------------------------
-// Conversation Flow
-// ----------------------------------------------
 function showIntro() {
   botMsg(
     "Kia ora. 👋🏾 I'm your friendly AI prompt generator. Select the task you'd like a standard prompt for.",
@@ -521,7 +492,6 @@ function showIntro() {
   );
 }
 
-// Step 1: core details
 function showStep1() {
   const body = createRow('bot');
   typeText("Let's start with the bid's main details.", body).then(() => {
@@ -551,7 +521,6 @@ function submitStep1() {
   setTimeout(() => showStep2(), 300);
 }
 
-// Step 2: response focus
 function showStep2() {
   const body = createRow('bot');
   typeText("Great. Now let's add the response focus.", body).then(() => {
@@ -579,7 +548,6 @@ function submitStep2() {
   setTimeout(() => startFileUploads(), 300);
 }
 
-// File upload orchestration
 function startFileUploads() {
   fileStepIndex = 0;
   fileStepLocked = false;
@@ -687,7 +655,6 @@ function showSubmitButton() {
   });
 }
 
-// webhook call (mock)
 function sendToWebhook() {
   botMsg('Creating prompt… ⏳').then(() => {
     showWaiting();
@@ -720,7 +687,7 @@ function showResult(text) {
   const body = createRow('bot');
   const intro = document.createElement('div');
   intro.className = 'bubble';
-  intro.textContent = "Here’s your standard prompt";
+  intro.textContent = "Here's your standard prompt";
   body.appendChild(intro);
   const wrap = document.createElement('div');
   wrap.className = 'result-wrap';
@@ -763,14 +730,12 @@ function askRestart() {
 
 function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
 
-// global drag overlay handlers
 let dragCtr = 0;
 document.addEventListener('dragenter', (e) => { if(e.dataTransfer?.types.includes('Files')){ dragCtr++; document.getElementById('dragOverlay').classList.add('active'); } });
 document.addEventListener('dragleave', () => { dragCtr--; if(dragCtr<=0) document.getElementById('dragOverlay').classList.remove('active'); });
 document.addEventListener('drop', () => { dragCtr=0; document.getElementById('dragOverlay').classList.remove('active'); });
 document.addEventListener('dragover', e => e.preventDefault());
 
-// Global restart button + hero reference
 window.restartChat = restartChat;
 document.getElementById('globalRestartBtn').addEventListener('click', () => fullResetAndRestart());
 
@@ -779,7 +744,6 @@ window.addEventListener('DOMContentLoaded', () => {
   HERO_HTML = document.getElementById('heroSection').outerHTML;
   setTimeout(() => showIntro(), 500);
 });
-
 </script>
 </body>
 </html>
